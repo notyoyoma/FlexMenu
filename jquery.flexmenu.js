@@ -1,12 +1,11 @@
 /*global jQuery */
 /*!
-* Menu Flex 0.1
+* FlexMenu 0.1
 *
-* Copyright 2011, Dave Rupert http://daverupert.com
+* Copyright 2015, Marty Naselli http://martynaselli.com
 * Released under the WTFPL license
-* http://sam.zoy.org/wtfpl/
 *
-* Date: 1/23/2015
+* Date: 3/18/2015
 */
 
 (function($) {
@@ -31,7 +30,7 @@
   var helpers = {
     removeValuesFromArray: function( arr, values ) {
       if (typeof values == "object") {
-        for ( var i = 0; i < arr.length; i += 1 ) {
+        for ( var i=0; i < arr.length; i+=1 ) {
           helpers.removeValuesFromArray(values[i]);
         }
       } else {
@@ -89,8 +88,8 @@
       this._flexEls(amtPerAttr, leftOver);
     },
     _resetCSS: function() {
-      for ( var i=0; i < this.els.length; i += 1) {
-        for ( var j=0; j < this.els[i].attrs.length; j += 1) {
+      for ( var i=0; i < this.els.length; i+=1) {
+        for ( var j=0; j < this.els[i].attrs.length; j+=1) {
           this.els[i].css(this.els[i].attrs[j], 0);
         }
       }
@@ -110,7 +109,7 @@
       }
     },
     _initAttrs: function() {
-      for (var i=0; i < this.els.length; i += 1) {
+      for (var i=0; i < this.els.length; i+=1) {
         var curEl   = this.els[i],
             elTag   = curEl.prop('tagName').toLowerCase();
         if (this.settings.flexibleAttrs[elTag] && this.settings.flexibleAttrs[elTag].length) {
@@ -133,17 +132,17 @@
     },
     _countAttrs: function() {
       this.attrCount = 0;
-      for (var i=0; i < this.els.length; i += 1) {
+      for (var i=0; i < this.els.length; i+=1) {
         this.attrCount += this.els[i].attrs.length;
       }
     },
     _flexEls: function(amtPerAttr, cheatAmt) {
       var attrItter = 0;
-      for (var i=0; i < this.els.length; i += 1) {
+      for (var i=0; i < this.els.length; i+=1) {
         var curEl = this.els[i],
             attrs = curEl.attrs,
             cssObj = {};
-        for (var j=0; j < attrs.length; j += 1) {
+        for (var j=0; j < attrs.length; j+=1) {
           cssObj[attrs[j]] = amtPerAttr;
           if (attrItter < cheatAmt) {
             cssObj[attrs[j]] += 1;
