@@ -25,6 +25,7 @@
             ':last-child': 'margin-right',
           }
         },
+        disableBelow: false,
       };
 
   var helpers = {
@@ -37,6 +38,18 @@
         arr.splice(arr.indexOf(values), 1);
       }
     },
+    removeInlineStyles: function( $obj, prop ) {
+      if (typeof prop == "object") {
+        for ( var i=0; i < prop.length; i+=1 ) {
+          helpers.removeInlineStyles($obj, prop[i]);
+        }
+      } else {
+        var reg = new RegExp( prop + "[^;]+;?", '');
+        $obj.each(function() {
+          $(this).attr('style', $obj.attr('style').replace(reg, ''));
+        });
+      }
+    }
   };
 
   FlexMenu.prototype = {
@@ -44,7 +57,6 @@
       this.settings = settings;
       this.el = el;
       this.initElements();
-      this.initCss();
       this.doFlex();
 
       var self = this;
@@ -63,6 +75,33 @@
       this._countAttrs();
     },
     initCss: function() {
+    },
+    doFlex: function() {
+      if (this.settings.disableBelow && ($(window).width() < this.settings.disableBelow)) {
+        this.disable();
+        return;
+      } else {
+        this.enable();
+      }
+      this.ul.savedWidth = parseInt(this.ul.css('width'));
+      this._resetCSS();
+      var lastLi = this.ul.children('li').last(),
+          menuWidth = lastLi.position().left + lastLi.outerWidth(),
+          flexAmt = this.ul.savedWidth - menuWidth,
+          amtPerAttr = Math.floor(flexAmt / this.attrCount),
+          leftOver = flexAmt - (amtPerAttr * this.attrCount);
+      this._flexEls(amtPerAttr, leftOver);
+    },
+    disable: function() {
+      if (this.enabled === false) return;
+      helpers.removeInlineStyles(this.ul, ['font-size', 'white-space', 'position']);
+      helpers.removeInlineStyles(this.ul.children('li'), ['font-size', 'display', 'float']);
+      helpers.removeInlineStyles(this.ul.find(' > li > a'), ['display']);
+      this._resetCSS();
+      this.enabled = false;
+    },
+    enable: function() {
+      if (this.enabled === true) return;
       this.ul.css({
         'font-size': 0, // 0 spacing between li elements
         'white-space': 'nowrap', // force overflow, so we can measure how much we need to flex
@@ -76,16 +115,7 @@
       this.ul.find(' > li > a').css({
         'display': 'inline-block',
       });
-    },
-    doFlex: function() {
-      this.ul.savedWidth = parseInt(this.ul.css('width'));
-      this._resetCSS();
-      var lastLi = this.ul.children('li').last(),
-          menuWidth = lastLi.position().left + lastLi.outerWidth(),
-          flexAmt = this.ul.savedWidth - menuWidth,
-          amtPerAttr = Math.floor(flexAmt / this.attrCount),
-          leftOver = flexAmt - (amtPerAttr * this.attrCount);
-      this._flexEls(amtPerAttr, leftOver);
+      this.enabled = true;
     },
     _resetCSS: function() {
       for ( var i=0; i < this.els.length; i+=1) {
@@ -153,7 +183,7 @@
       }
     },
   };
-
+  
   $.fn.FlexMenu = function(options) {
     // Initialize FlexMenu, and store it on $this.data('FM-class')
     // If FM-class interferes with another plugin, simply override settings.NS
