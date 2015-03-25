@@ -46,7 +46,7 @@
       } else {
         var reg = new RegExp( prop + "[^;]+;?", '');
         $obj.each(function() {
-          $(this).attr('style', $obj.attr('style').replace(reg, ''));
+          $(this).attr('style', $(this).attr('style').replace(reg, ''));
         });
       }
     }
