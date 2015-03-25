@@ -46,7 +46,11 @@
       } else {
         var reg = new RegExp( prop + "[^;]+;?", '');
         $obj.each(function() {
-          $(this).attr('style', $(this).attr('style').replace(reg, ''));
+          // If nothing has been initialized, attr('style') can be undefined
+          var style = $(this).attr('style');
+          if (style) {
+            $(this).attr('style', style.replace(reg, ''));
+          }
         });
       }
     }
