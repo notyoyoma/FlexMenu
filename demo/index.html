@@ -73,7 +73,26 @@
       a: ['padding-left', 'padding-right']
     }
   });</pre>
-
+    <div class="menu">
+      <nav id="3">
+        <ul>
+          <li><a href="#">This</a></li>
+          <li><a href="#">Flexible Menu</a></li>
+          <li><a href="#">will disable</a></li>
+          <li><a href="#">below 768px</a></li>
+          <li><a href="#">and remove all</a></li>
+          <li><a href="#">inline styles</a></li>
+          <li><a href="#">from flexed elements</a></li>
+        </ul>
+      </nav>
+    </div>
+<pre>
+  $('nav#1').FlexMenu({
+    flexibleAttrs: {
+      a: ['padding-left', 'padding-right']
+    },
+    disableBelow: 768
+  });</pre>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
     <script type="text/javascript" src="../jquery.flexmenu.js"></script>
     <script>
@@ -82,6 +101,12 @@
         flexibleAttrs: {
           a: ['padding-left', 'padding-right']
         }
+      });
+      $('nav#3').FlexMenu({
+        flexibleAttrs: {
+          a: ['padding-left', 'padding-right']
+        },
+        disableBelow: 768
       });
     </script>
 
