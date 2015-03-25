@@ -97,7 +97,9 @@
       helpers.removeInlineStyles(this.ul, ['font-size', 'white-space', 'position']);
       helpers.removeInlineStyles(this.ul.children('li'), ['font-size', 'display', 'float']);
       helpers.removeInlineStyles(this.ul.find(' > li > a'), ['display']);
-      this._resetCSS();
+      for ( var i=0; i < this.els.length; i+=1) {
+        helpers.removeInlineStyles(this.els[i], this.els[i].attrs);
+      }
       this.enabled = false;
     },
     enable: function() {
@@ -117,7 +119,7 @@
       });
       this.enabled = true;
     },
-    _resetCSS: function() {
+    _resetCSS: function(removeInlineStyles) {
       for ( var i=0; i < this.els.length; i+=1) {
         for ( var j=0; j < this.els[i].attrs.length; j+=1) {
           this.els[i].css(this.els[i].attrs[j], 0);
