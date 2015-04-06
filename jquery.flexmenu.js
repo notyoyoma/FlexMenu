@@ -99,6 +99,7 @@
     doFlex: function() {
       if (this.settings.disableBelow && ($(window).width() < this.settings.disableBelow)) {
         this.disable();
+        this.ul.trigger(this.settings.finishedEvent);
         return;
       } else {
         this.enable();
