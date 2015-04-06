@@ -75,7 +75,9 @@
     initEvents: function() {
       var self = this;
       $(window).load(function() {
-        self.doFlex()
+        setTimeout(function() {
+          self.doFlex()
+        }, 10);
       });
       $(window).resize(function() {
         // if the size of the window has actually changed, run
