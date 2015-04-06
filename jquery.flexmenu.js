@@ -26,6 +26,7 @@
           }
         },
         disableBelow: false,
+        finishedEvent: "nsFlexFinished"
       };
 
   var helpers = {
@@ -61,14 +62,7 @@
       this.settings = settings;
       this.el = el;
       this.initElements();
-      this.doFlex();
-
-      var self = this;
-      $(window).resize(function() {
-        if ( $(self.ul).width() != self.ul.savedWidth ) {
-          self.doFlex();
-        }
-      });
+      this.initEvents();
     },
     initElements: function() {
       this._initUl();
@@ -78,7 +72,29 @@
       // Allow the user to add / remove properties to flex
       this._countAttrs();
     },
-    initCss: function() {
+    initEvents: function() {
+      var self = this;
+      $(document).ready(function() {
+        self.doFlex()
+      });
+      $(window).resize(function() {
+        // if the size of the window has actually changed, run
+        if ( $(self.ul).width() != self.ul.savedWidth ) {
+          if (self.running) {
+            self.runAgain = true;
+          } else {
+            self.running = true;
+            self.doFlex();
+          }
+        }
+      });
+      self.ul.on(self.settings.finishedEvent, function() {
+        self.running = false;
+        if (self.runAgain) {
+          self.runAgain = false;
+          self.doFlex();
+        }
+      });
     },
     doFlex: function() {
       if (this.settings.disableBelow && ($(window).width() < this.settings.disableBelow)) {
@@ -95,6 +111,7 @@
           amtPerAttr = Math.floor(flexAmt / this.attrCount),
           leftOver = flexAmt - (amtPerAttr * this.attrCount);
       this._flexEls(amtPerAttr, leftOver);
+      this.ul.trigger(this.settings.finishedEvent);
     },
     disable: function() {
       if (this.enabled === false) return;
