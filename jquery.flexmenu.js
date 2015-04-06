@@ -74,7 +74,7 @@
     },
     initEvents: function() {
       var self = this;
-      $(document).ready(function() {
+      $(window).load(function() {
         self.doFlex()
       });
       $(window).resize(function() {
