@@ -74,11 +74,9 @@
     },
     initEvents: function() {
       var self = this;
-      $(window).load(function() {
-        setTimeout(function() {
-          self.doFlex()
-        }, 10);
-      });
+      // Do the flex immediately when called. We don't need to wait for $document.ready,
+      // because the element already exists.
+      self.doFlex()
       $(window).resize(function() {
         // if the size of the window has actually changed, run
         if ( $(self.ul).width() != self.ul.savedWidth ) {
